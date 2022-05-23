@@ -164,6 +164,8 @@ fetch('./books.json')
     });
   });
 
+
+
 fragment.appendChild(intro);
 fragment.appendChild(catalog);
 
