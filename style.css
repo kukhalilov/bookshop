@@ -1,0 +1,297 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+.intro {
+  min-height: 100vh;
+  color: #fff;
+  background-color: #000;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 40px;
+  padding: 20px;
+}
+
+.intro-text {
+  width: 40vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 3vw;
+}
+
+.intro-text h1 {
+  width: 320px;
+  font-size: 3rem;
+}
+
+.intro-text p {
+  width: 310px;
+  font-size: 1.4rem;
+}
+
+.intro-btn-block {
+  width: 300px;
+  display: flex;
+}
+
+.intro-text a {
+  display: flex;
+  justify-content: center;
+  text-decoration: none;
+  width: 210px;
+  color: #fff;
+  background-color: #000;
+  font-size: 1.1rem;
+  padding: 15px 25px;
+  border: 2px solid #fff;
+}
+
+.intro-text a:hover {
+  background-color: #fff;
+  color: #000;
+}
+
+.intro-image {
+  display: flex;
+  width: 45vw;
+}
+
+.intro-img {
+  width: 100%;
+}
+
+.intro-advantages {
+  width: 90vw;
+}
+
+.intro-ul {
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  gap: 40px;
+  list-style: none;
+}
+
+.intro-ul li {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
+}
+
+.intro-ul li .num {
+  display: flex;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  font-size: 2rem;
+  border: 2px solid #fff;
+  border-radius: 50%;
+}
+
+.intro-ul li div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.advantage-title {
+  font-size: 1.2rem;
+}
+
+.advantage-description {
+  color: #888;
+}
+
+@media (max-width: 800px) {
+  .intro-image {
+    width: 70vw;
+  }
+
+  .intro-text {
+    text-align: center;
+    gap: 5vw;
+  }
+
+  .intro-btn-block {
+    width: 200px;
+    display: flex;
+  }
+
+  .intro-ul li div {
+    align-items: flex-start;
+  }
+
+  .intro-ul .advantage-description {
+    width: 200px;
+  }
+}
+
+#catalog {
+  background-color: #333;
+  padding: 30px;
+}
+
+#catalog h2 {
+  color: #fff;
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 30px;
+}
+
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 40px;
+}
+
+.card {
+  height: 300px;
+  width: 400px;
+  color: #fff;
+  background-color: #000;
+  display: flex;
+}
+
+.card-body {
+  width: 200px;
+  padding: 10px;
+  position: relative;
+  text-align: center;
+}
+
+.card-img {
+  height: 300px;
+  width: 200px;
+}
+
+.title {
+  max-height: 90px;
+  padding: 5px;
+  color: #000;
+  display: inline-block;
+  background-color: rgb(149, 244, 193);
+}
+
+.author {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 140px;
+}
+
+.price {
+  position: absolute;
+  bottom: 80px;
+  left: 0;
+  right: 0;
+  font-size: 1.6rem;
+  display: block;
+}
+
+.btn-show-more,
+.btn-add {
+  color: #fff;
+  background-color: rgb(1, 59, 7);
+  width: 84px;
+  position: absolute;
+  bottom: 10px;
+  margin-top: 20px;
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 4px;
+}
+
+.btn-show-more:hover,
+.btn-add:hover {
+  cursor: pointer;
+  color: #000;
+  background-color: #eee;
+}
+
+.btn-show-more {
+  left: 10px;
+}
+
+.btn-add {
+  right: 10px;
+}
+
+.book-modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  padding-top: 100px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+.modal-content {
+  position: relative;
+  background-color: #fefefe;
+  margin: auto;
+  padding: 0;
+  border: 1px solid #888;
+  max-width: 600px;
+  min-width: 290px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  -webkit-animation-name: animatetop;
+  -webkit-animation-duration: 0.4s;
+  animation-name: animatetop;
+  animation-duration: 0.4s;
+}
+
+@-webkit-keyframes animatetop {
+  from {
+    top: -300px;
+    opacity: 0;
+  }
+  to {
+    top: 0;
+    opacity: 1;
+  }
+}
+
+@keyframes animatetop {
+  from {
+    top: -300px;
+    opacity: 0;
+  }
+  to {
+    top: 0;
+    opacity: 1;
+  }
+}
+
+@media (max-width: 424px) {
+  .card {
+    width: 280px;
+    height: 640px;
+    flex-direction: column;
+  }
+
+  .card-img {
+    height: 320px;
+    width: 280px;
+  }
+
+  .card-body {
+      height: 300px;
+      width: 280px;
+  }
+}
