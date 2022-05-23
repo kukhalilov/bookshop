@@ -139,7 +139,7 @@ html {
 
 #catalog {
   background-color: #333;
-  padding: 30px;
+  padding: 30px 30px 70px 30px;
 }
 
 #catalog h2 {
@@ -232,7 +232,7 @@ html {
   display: none;
   position: fixed;
   z-index: 1;
-  padding-top: 100px;
+  padding-top: 35vh;
   left: 0;
   top: 0;
   width: 100%;
@@ -243,9 +243,13 @@ html {
 
 .modal-content {
   position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
   background-color: #fefefe;
   margin: auto;
-  padding: 0;
+  padding: 10px;
   border: 1px solid #888;
   max-width: 600px;
   min-width: 290px;
@@ -254,6 +258,56 @@ html {
   -webkit-animation-duration: 0.4s;
   animation-name: animatetop;
   animation-duration: 0.4s;
+}
+
+.modal-content h3 {
+  padding: 5px;
+  color: #fff;
+  background-color: #333;
+  text-align: center;
+}
+
+.modal-content button {
+  color: #fff;
+  background-color: #333;
+  border: none;
+  border-radius: 5px;
+  width: 100px;
+  padding: 5px 15px;
+}
+
+.modal-content button:hover {
+  background-color: #000;
+}
+
+.bottomBag {
+  position: fixed;
+  bottom: -50vh;
+  width: 100%;
+  height: 70vh;
+  border-top: 1px solid #000;
+  background: red;
+  z-index: 1;
+  transition: all 1s;
+}
+.hide {
+  opacity: 0;
+  left: -100%;
+}
+.show {
+  opacity: 1;
+  left: 0;
+}
+
+.bottom-bag-content {
+    position: relative;
+}
+
+.upward-arrow {
+    font-size: 1.8rem;
+    position: absolute;
+    top: 5px;
+    left: 49%;
 }
 
 @-webkit-keyframes animatetop {
@@ -291,7 +345,11 @@ html {
   }
 
   .card-body {
-      height: 300px;
-      width: 280px;
+    height: 300px;
+    width: 280px;
+  }
+
+  .book-modal {
+    padding-top: 25vh;
   }
 }
