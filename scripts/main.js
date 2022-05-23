@@ -140,31 +140,50 @@ fetch('./books.json')
 
       let modal = document.createElement('div');
       modal.classList.add('book-modal');
-      let modalContent = document.createElement('div')
-      modalContent.classList.add('modal-content')
+      let modalContent = document.createElement('div');
+      modalContent.classList.add('modal-content');
       modalContent.appendChild(modalTitle);
       modalContent.appendChild(description);
       modalContent.appendChild(close);
-      modal.appendChild(modalContent)
+      modal.appendChild(modalContent);
       main.appendChild(modal);
 
-      showMore.onclick = function() {
-        modal.style.display = "block";
-      }
+      showMore.onclick = function () {
+        modal.style.display = 'block';
+      };
 
-      close.onclick = function() {
-        modal.style.display = "none";
-      }
-
-      window.onclick = function(event) {
-        if (event.target == modal) {
-          modal.style.display = "none";
-        }
-      }
+      close.onclick = function () {
+        modal.style.display = 'none';
+      };
     });
   });
 
+let bottomBag = document.createElement('div');
+bottomBag.id = 'bottomBag';
+bottomBag.className = 'bottomBag hide';
+
+let bottomBagContent = document.createElement('div');
+bottomBagContent.className = 'bottom-bag-content';
+bottomBag.appendChild(bottomBagContent);
+
+let span = document.createElement('span');
+span.innerHTML = '&uarr;';
+span.className = 'upward-arrow';
+bottomBagContent.appendChild(span);
+
+const myScrollFunc = function () {
+  let y = window.scrollY;
+  if (y >= intro.offsetHeight / 2) {
+    bottomBag.className = 'bottomBag show';
+  } else {
+    bottomBag.className = 'bottomBag hide';
+  }
+};
+
+window.addEventListener('scroll', myScrollFunc);
+
 fragment.appendChild(intro);
 fragment.appendChild(catalog);
+fragment.appendChild(bottomBag);
 
 main.appendChild(fragment);
