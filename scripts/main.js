@@ -164,12 +164,33 @@ fetch('./books.json')
   .then(() => {
     addBtns = Array.from(document.getElementsByClassName('btn-add'));
     console.log(addBtns);
+    let total = 0;
+    let totalSum = document.createElement('h3');
+    totalSum.classList.add('total-sum');
+    totalSum.innerHTML = `Total sum is `;
+    bottomBagContent.appendChild(totalSum);
+
+    let confirm = document.createElement('a')
+    confirm.classList.add('confirm')
+    confirm.innerHTML = 'Confirm Order'
+    confirm.href = './order-form.html'
+    bottomBagContent.appendChild(confirm)
+
     setInterval(() => {
       addBtns.forEach((btn) => {
         if (btn.parentElement.parentElement.classList.contains('in-bag')) {
           if (!cardsInBagBlock.contains(btn.parentElement.parentElement)) {
             cardsInBagBlock.appendChild(btn.parentElement.parentElement);
-            cards.insertBefore(btn.parentElement.parentElement.cloneNode({deep: true}), cards.children[btn.parentElement.parentElement.id]);
+            total =
+              total +
+              Number(
+                btn.parentElement.children[2].textContent.replace('$', '')
+              );
+            totalSum.innerHTML = `Total sum is $${total}`;
+            cards.insertBefore(
+              btn.parentElement.parentElement.cloneNode({ deep: true }),
+              cards.children[btn.parentElement.parentElement.id]
+            );
           }
         }
       });
