@@ -163,18 +163,17 @@ fetch('./books.json')
   })
   .then(() => {
     addBtns = Array.from(document.getElementsByClassName('btn-add'));
-    console.log(addBtns);
     let total = 0;
     let totalSum = document.createElement('h3');
     totalSum.classList.add('total-sum');
     totalSum.innerHTML = `Total sum is `;
     bottomBagContent.appendChild(totalSum);
 
-    let confirm = document.createElement('a')
-    confirm.classList.add('confirm')
-    confirm.innerHTML = 'Confirm Order'
-    confirm.href = './order-form.html'
-    bottomBagContent.appendChild(confirm)
+    let confirm = document.createElement('a');
+    confirm.classList.add('confirm');
+    confirm.innerHTML = 'Confirm Order';
+    confirm.href = './order-form.html';
+    bottomBagContent.appendChild(confirm);
 
     setInterval(() => {
       addBtns.forEach((btn) => {
@@ -195,7 +194,23 @@ fetch('./books.json')
         }
       });
     }, 1000);
-  });
+  })
+  .then(() => {
+    let closeBtn = document.createElement('span');
+    closeBtn.classList.add('close-btn');
+    closeBtn.innerHTML = '&times;';
+    setInterval(() => {
+      let cards = Array.from(document.getElementsByClassName('card'));
+      cards.forEach((el) => {
+        if (el.classList.contains('in-bag') && cardsInBagBlock.contains(el)) {
+          if (!el.classList.contains('has-btn')) {
+            el.children[1].appendChild(closeBtn.cloneNode({ deep: true }));
+            el.classList.add('has-btn');
+          }
+        }
+      });
+    }, 1000);
+  })
 
 let bottomBag = document.createElement('div');
 bottomBag.id = 'bottomBag';
