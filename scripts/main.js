@@ -87,9 +87,10 @@ fetch('./books.json')
     return response.json();
   })
   .then((data) => {
-    data.forEach((el) => {
+    data.forEach((el, index) => {
       let card = document.createElement('div');
       card.classList.add('card');
+      card.id = index;
       cards.appendChild(card);
 
       let img = document.createElement('img');
@@ -128,6 +129,9 @@ fetch('./books.json')
       let addTobag = document.createElement('button');
       addTobag.innerHTML = 'Add to Bag';
       addTobag.classList.add('btn-add');
+      addTobag.addEventListener('click', () => {
+        card.classList.add('in-bag');
+      });
       cardBody.appendChild(addTobag);
 
       let description = document.createElement('p');
@@ -156,6 +160,20 @@ fetch('./books.json')
         modal.style.display = 'none';
       };
     });
+  })
+  .then(() => {
+    addBtns = Array.from(document.getElementsByClassName('btn-add'));
+    console.log(addBtns);
+    setInterval(() => {
+      addBtns.forEach((btn) => {
+        if (btn.parentElement.parentElement.classList.contains('in-bag')) {
+          if (!cardsInBagBlock.contains(btn.parentElement.parentElement)) {
+            cardsInBagBlock.appendChild(btn.parentElement.parentElement);
+            cards.insertBefore(btn.parentElement.parentElement.cloneNode({deep: true}), cards.children[btn.parentElement.parentElement.id]);
+          }
+        }
+      });
+    }, 1000);
   });
 
 let bottomBag = document.createElement('div');
@@ -164,21 +182,37 @@ bottomBag.className = 'bottomBag hide';
 
 let bottomBagContent = document.createElement('div');
 bottomBagContent.className = 'bottom-bag-content';
-bottomBag.appendChild(bottomBagContent);
 
-let span = document.createElement('span');
-span.innerHTML = '&uarr;';
-span.className = 'upward-arrow';
-bottomBagContent.appendChild(span);
+let chevronUp = document.createElement('div');
+chevronUp.innerHTML =
+  '<svg style="height: 35px; width: 35px; color: rgb(0, 0, 255);" xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512"><title>ionicons-v5-a</title><polyline points="112 328 256 184 400 328" style="fill:none;stroke:#000;stroke-linecap:square;stroke-miterlimit:10;stroke-width:48px"></polyline></svg>';
+chevronUp.className = 'upward-arrow';
+bottomBag.appendChild(chevronUp);
+chevronUp.addEventListener('click', () => {
+  bottomBag.classList.toggle('full');
+});
 
 const myScrollFunc = function () {
   let y = window.scrollY;
   if (y >= intro.offsetHeight / 2) {
-    bottomBag.className = 'bottomBag show';
+    bottomBag.classList.add('show');
+    bottomBag.classList.remove('hide');
   } else {
-    bottomBag.className = 'bottomBag hide';
+    bottomBag.classList.add('hide');
+    bottomBag.classList.remove('show');
+    bottomBag.classList.remove('full');
   }
 };
+
+let orderBooks = document.createElement('h2');
+orderBooks.innerHTML = 'Order Books';
+
+let cardsInBagBlock = document.createElement('div');
+cardsInBagBlock.classList.add('cards-in-bag-block');
+
+bottomBag.appendChild(orderBooks);
+bottomBagContent.appendChild(cardsInBagBlock);
+bottomBag.appendChild(bottomBagContent);
 
 window.addEventListener('scroll', myScrollFunc);
 
