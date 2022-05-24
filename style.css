@@ -177,8 +177,8 @@ html {
 }
 
 .title {
-  max-height: 90px;
-  padding: 5px;
+  max-height: 135px;
+  padding: 3px 16px;
   color: #000;
   display: inline-block;
   background-color: rgb(149, 244, 193);
@@ -188,12 +188,12 @@ html {
   position: absolute;
   left: 0;
   right: 0;
-  bottom: 140px;
+  bottom: 120px;
 }
 
 .price {
   position: absolute;
-  bottom: 80px;
+  bottom: 70px;
   left: 0;
   right: 0;
   font-size: 1.6rem;
@@ -367,6 +367,26 @@ html {
 
 .confirm:hover {
     background-color: #000;
+}
+
+.close-btn {
+    display: inline-block;
+    width: 35px;
+    height: 35px;
+    font-size: 2rem;
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: #fff;
+    color: #f00;
+    font-weight: 900;
+    border-bottom-left-radius: 50%;
+    cursor: pointer;
+}
+
+.close-btn:hover {
+    background-color: #777;
+    color: #f00;
 }
 
 @-webkit-keyframes animatetop {
