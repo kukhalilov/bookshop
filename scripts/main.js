@@ -90,7 +90,7 @@ fetch('./books.json')
     data.forEach((el, index) => {
       let card = document.createElement('div');
       card.classList.add('card');
-      card.id = index;
+      card.id = `id${index}`;
       cards.appendChild(card);
 
       let img = document.createElement('img');
@@ -150,7 +150,7 @@ fetch('./books.json')
       modalContent.appendChild(description);
       modalContent.appendChild(close);
       modal.appendChild(modalContent);
-      main.appendChild(modal);
+      catalog.appendChild(modal);
 
       showMore.onclick = function () {
         modal.style.display = 'block';
@@ -163,10 +163,9 @@ fetch('./books.json')
   })
   .then(() => {
     addBtns = Array.from(document.getElementsByClassName('btn-add'));
-    let total = 0;
     let totalSum = document.createElement('h3');
     totalSum.classList.add('total-sum');
-    totalSum.innerHTML = `Total sum is `;
+    totalSum.innerHTML = `Total sum is $0`;
     bottomBagContent.appendChild(totalSum);
 
     let confirm = document.createElement('a');
@@ -175,42 +174,83 @@ fetch('./books.json')
     confirm.href = './order-form.html';
     bottomBagContent.appendChild(confirm);
 
-    setInterval(() => {
-      addBtns.forEach((btn) => {
-        if (btn.parentElement.parentElement.classList.contains('in-bag')) {
-          if (!cardsInBagBlock.contains(btn.parentElement.parentElement)) {
-            cardsInBagBlock.appendChild(btn.parentElement.parentElement);
-            total =
-              total +
-              Number(
-                btn.parentElement.children[2].textContent.replace('$', '')
-              );
-            totalSum.innerHTML = `Total sum is $${total}`;
-            cards.insertBefore(
-              btn.parentElement.parentElement.cloneNode({ deep: true }),
-              cards.children[btn.parentElement.parentElement.id]
-            );
-          }
-        }
-      });
-    }, 1000);
-  })
-  .then(() => {
+    let cart = document.createElement('div');
+    cart.classList.add('cart');
+    cart.innerHTML = '<i class="fa-solid fa-cart-shopping"></i> ';
+    let initialNum = document.createElement('span');
+    initialNum.textContent = '0';
+    cart.appendChild(initialNum);
+    orderBooks.appendChild(cart);
+
+    function updateTotalSum() {
+      let total = Array.from(
+        cardsInBagBlock.querySelectorAll('.in-bag')
+      ).reduce((acc, num) => {
+        acc += Number(num.children[1].children[2].textContent.replace('$', ''));
+        return acc;
+      }, 0);
+      totalSum.innerHTML = `Total sum is $${total}`;
+    }
+
+    function updateNumberOfBooks() {
+      let num = Array.from(cardsInBagBlock.querySelectorAll('.in-bag')).length;
+      let numSpan = document.createElement('span');
+      numSpan.classList.add('num-span');
+      numSpan.textContent = num;
+      cart.children[1].remove();
+      cart.appendChild(numSpan);
+      console.log(num);
+    }
+
     let closeBtn = document.createElement('span');
     closeBtn.classList.add('close-btn');
     closeBtn.innerHTML = '&times;';
-    setInterval(() => {
-      let cards = Array.from(document.getElementsByClassName('card'));
-      cards.forEach((el) => {
-        if (el.classList.contains('in-bag') && cardsInBagBlock.contains(el)) {
-          if (!el.classList.contains('has-btn')) {
-            el.children[1].appendChild(closeBtn.cloneNode({ deep: true }));
-            el.classList.add('has-btn');
+
+    addBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        if (btn.parentElement.parentElement.classList.contains('in-bag')) {
+          if (
+            cardsInBagBlock.querySelector(
+              `#${btn.parentElement.parentElement.id}`
+            ) == null ||
+            btn.parentElement.parentElement.isEqualNode(
+              cardsInBagBlock
+                .querySelector(`#${btn.parentElement.parentElement.id}`)
+                .classList.remove('has-btn')
+            )
+          ) {
+            cardsInBagBlock.appendChild(
+              btn.parentElement.parentElement.cloneNode({ deep: true })
+            );
+            updateTotalSum();
+            updateNumberOfBooks();
           }
         }
+
+        let cards = Array.from(document.getElementsByClassName('card'));
+        cards.forEach((el) => {
+          if (el.classList.contains('in-bag') && cardsInBagBlock.contains(el)) {
+            if (!el.classList.contains('has-btn')) {
+              el.children[1].appendChild(closeBtn.cloneNode({ deep: true }));
+              el.classList.add('has-btn');
+            }
+          }
+        });
+
+        let closeBtns = Array.from(
+          cardsInBagBlock.querySelectorAll('.close-btn')
+        );
+        closeBtns.forEach((btn) => {
+          btn.addEventListener('click', () => {
+            console.log(btn.parentElement.parentElement);
+            btn.parentElement.parentElement.remove();
+            updateTotalSum();
+            updateNumberOfBooks();
+          });
+        });
       });
-    }, 1000);
-  })
+    });
+  });
 
 let bottomBag = document.createElement('div');
 bottomBag.id = 'bottomBag';
@@ -241,7 +281,7 @@ const myScrollFunc = function () {
 };
 
 let orderBooks = document.createElement('h2');
-orderBooks.innerHTML = 'Order Books';
+orderBooks.innerHTML = 'Order Books ';
 
 let cardsInBagBlock = document.createElement('div');
 cardsInBagBlock.classList.add('cards-in-bag-block');
