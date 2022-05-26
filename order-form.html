@@ -1,12 +1,101 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
     <title>Order Form</title>
-</head>
-<body>
-    
-</body>
+  </head>
+  <body>
+    <main id="main" class="main">
+      <div class="container">
+        <form id="form" class="form">
+          <h2>Please fill in the form to complete the order</h2>
+            <div class="wrapper">
+                <div class="form-control">
+                    <div class="label"><label for="name">Name <span>*</span></label></div>
+                  <input type="text" id="name" placeholder="Enter Name" onkeyup="validateName()" onfocusout="validateName()" onchange="validateName()"/>
+                  <small>Error Message</small>
+                </div>
+                <div class="form-control">
+                    <div class="label"><label for="surname">Surname <span>*</span></label></div>
+                  <input type="text" id="surname" placeholder="Enter Surname" onkeyup="validateSurname()" onfocusout="validateSurname()" onchange="validateSurname()"/>
+                  <small>Error Message</small>
+                </div>
+                <div class="form-control">
+                    <div class="label">
+                      <label for="date">Date <span>*</span></label>
+                    </div>
+                  <input type="date" id="date" placeholder="Enter Date" onkeyup="validateDate()" onfocusout="validateDate()" onchange="validateDate()"/>
+                  <small>Error Message</small>
+                </div>
+                <div class="form-control">
+                    <div class="label"><label for="street">Street Name <span>*</span></label></div>
+                  <input type="text" id="street" placeholder="Enter Street" onkeyup="validateStreet()" onfocusout="validateStreet()" onchange="validateStreet()"/>
+                  <small>Error Message</small>
+                </div>
+                <div class="form-control">
+                    <div class="label"><label for="house-number">House Number <span>*</span></label></div>
+                  <input
+                    type="number"
+                    id="house-number"
+                    placeholder="Enter House Number" onkeyup="validateHouseNumber()" onfocusout="validateHouseNumber()" onchange="validateHouseNumber()"
+                  />
+                  <small>Error Message</small>
+                </div>
+                <div class="form-control">
+                    <div class="label"><label for="flat-number">Flat Number <span>*</span></label></div>
+                  <input
+                    type="text"
+                    id="flat-number"
+                    placeholder="Enter Flat Number" onkeyup="validateFlatNumber()" onfocusout="validateFlatNumber()" onchange="validateFlatNumber()"
+                  />
+                  <small>Error Message</small>
+                </div>
+            </div>
+            <div class="radio-checkbox-wrapper">
+                <div class="form-control" onclick="validatePaymentType()">
+                    <div class="label">Choose the payment type <span>*</span></div>
+                    <input type="radio" id="cash" class="radio" name="payment-type" value="Cash"
+                    />
+                    <label for="cash">Cash</label>
+                    <br>
+                    <input type="radio" id="card" class="radio" name="payment-type" value="Card"/>
+                    <label for="card">Card</label>
+                    <small>Error Message</small>
+                  </div>
+                  <div class="form-control" onchange="validateGiftType()">
+                    <div class="label">Choose 2 gifts (optional)</div>
+                    <input type="checkbox" class="checkbox" id="gift1" name="gift1" value="pack as a gift,"/>
+                    <label for="gift1">pack as a gift,</label>
+                    <br>
+                    <input type="checkbox" class="checkbox" id="gift2" name="gift2" value="add postcard,"/>
+                    <label for="gift2">add postcard,</label>
+                    <br>
+                    <input type="checkbox" class="checkbox" id="gift3" name="gift3" value="provide 2% discount to the next time,"/>
+                    <label for="gift3">provide 2% discount to the next time,</label>
+                    <br>
+                    <input type="checkbox" class="checkbox" id="gift4" name="gift4" value="branded pen or pencil"/>
+                    <label for="gift4">branded pen or pencil</label>
+                    <small>Error Message</small>
+                  </div>
+            </div>
+          <button disabled onmouseover="validateEntireForm()">Complete</button>
+        </form>
+      </div>
+      <div class="modal-summarize">
+        <div class="modal-content">
+            <h2>Thank you for your purchase</h2>
+            <h3>Order Summary</h3>
+            <div class="summary">
+                <p class="customer"></p>
+                <p class="address"></p>
+                <p class="date"></p>
+            </div>
+            <a class="btn-back-to-homepage" href="./index.html">Back to Homepage</a></div>
+      </div>
+    </main>
+    <script src="./scripts/form-validation.js"></script>
+  </body>
 </html>
