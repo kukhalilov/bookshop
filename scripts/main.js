@@ -82,6 +82,25 @@ let cards = document.createElement('div');
 cards.classList.add('cards');
 catalog.appendChild(cards);
 
+function allowDrop(ev) {
+  ev.preventDefault();
+}
+
+function drag(ev) {
+  ev.dataTransfer.setData("text/html", ev.target.id);
+  console.log(ev.target.id)
+}
+
+function drop(ev) {
+  ev.preventDefault();
+  var data=ev.dataTransfer.getData("text/html");
+  var nodeCopy = document.getElementById(data).cloneNode(true);
+  console.log(nodeCopy)
+  console.log(ev.target)
+  nodeCopy.id = "newId";
+  ev.target.appendChild(nodeCopy);
+}
+
 fetch('./books.json')
   .then((response) => {
     return response.json();
@@ -91,6 +110,8 @@ fetch('./books.json')
       let card = document.createElement('div');
       card.classList.add('card');
       card.id = `id${index}`;
+      card.draggable = 'true';
+      card.ondragstart = 'drag(event)';
       cards.appendChild(card);
 
       let img = document.createElement('img');
@@ -284,7 +305,11 @@ let orderBooks = document.createElement('h2');
 orderBooks.innerHTML = 'Order Books ';
 
 let cardsInBagBlock = document.createElement('div');
+cardsInBagBlock.id = 'cards-in-bag-block'
 cardsInBagBlock.classList.add('cards-in-bag-block');
+
+bottomBag.ondrop = 'drop(event)';
+bottomBag.ondragover = 'allowDrop(event)';
 
 bottomBag.appendChild(orderBooks);
 bottomBagContent.appendChild(cardsInBagBlock);
