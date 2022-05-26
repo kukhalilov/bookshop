@@ -524,7 +524,7 @@ html {
 
 .form-control input
 {
-  border: 2px solid #f0f0f0;
+  border: 3px solid #f0f0f0;
   border-radius: 4px;
   padding: 10px;
   font-size: 14px;   
@@ -546,7 +546,7 @@ input[type="radio"], input[type="checkbox"] {
 }
 
 .form-control.success input {
-  border-color: green;
+  border-color: #0f0;
 }
 
 .form-control.error input {
