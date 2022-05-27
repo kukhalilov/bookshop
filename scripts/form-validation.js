@@ -12,6 +12,10 @@ let customer = document.querySelector('.customer');
 let address = document.querySelector('.address');
 let summaryDate = document.querySelector('.date');
 
+document.addEventListener("DOMContentLoaded", function() {
+  validateEntireForm;
+});
+
 //Show input error messages
 function showError(input, message) {
   const formControl = input.parentElement;
@@ -92,64 +96,83 @@ function isDashUsageCorrect(input) {
   }
 }
 
+function isDateInTheFuture(date) {
+  let today = new Date();
+  today.setHours(23, 59, 59, 998);
+  if (new Date(date.value).getTime() > today.getTime()) {
+    showSucces(date);
+    return true;
+  } else {
+    showError(date, `Date must be not earlier than tomorrow`);
+    return false;
+  }
+}
+
 function validateName() {
-  let isLongEnough = checkLength(name, 4);
-  if (isLongEnough) {
-    let hasOnlyLettters = onlyLetters(name);
-    if (hasOnlyLettters) {
-      return true;
-    } else {
-      return false;
-    }
+  sessionStorage.setItem('isNameLongEnough', checkLength(name, 4));
+  if (sessionStorage.getItem('isNameLongEnough') === 'true') {
+    sessionStorage.setItem('hasNameGotOnlyLettters', onlyLetters(name));
+  }
+}
+
+function isNameValid() {
+  if ((sessionStorage.isNameLongEnough === 'true' && sessionStorage.hasNameGotOnlyLettters === 'true') || (sessionStorage.isNameLongEnough === 'true' && (sessionStorage.hasNameGotOnlyLettters == undefined))) {
+    return true;
   } else {
     return false;
   }
 }
 
 function validateSurname() {
-  let isLongEnough = checkLength(surname, 5);
-  if (isLongEnough) {
-    let hasOnlyLettters = onlyLetters(surname);
-    if (hasOnlyLettters) {
+  sessionStorage.setItem('isSurnameLongEnough', checkLength(surname, 5));
+  if (sessionStorage.getItem('isSurnameLongEnough') === 'true') {
+    sessionStorage.setItem('hasSurnameGotOnlyLettters', onlyLetters(surname));
+  }
+}
+
+function isSurnameValid() {
+  if (((sessionStorage.isSurnameLongEnough === 'true' && sessionStorage.hasSurnameGotOnlyLettters === 'true') || (sessionStorage.isSurnameLongEnough === 'true' && (sessionStorage.hasSurnameGotOnlyLettters == undefined)))) {
+    console.log(sessionStorage.isSurnameLongEnough)
       return true;
     } else {
       return false;
     }
-  } else {
-    return false;
-  }
 }
 
 function validateDate() {
-  const today = new Date();
-  today.setHours(23, 59, 59, 998);
-  let isSet = checkRequired(date);
-  if (isSet) {
-    if (new Date(date.value).getTime() > today.getTime()) {
-      showSucces(date);
+  sessionStorage.setItem('isDateSet', checkRequired(date));
+  if (sessionStorage.getItem('isDateSet') === 'true') {
+    sessionStorage.setItem('isDateInFuture', isDateInTheFuture(date));
+  }
+}
+
+function isDateValid() {
+  if ((sessionStorage.isDateSet === 'true' && sessionStorage.isDateInFuture === 'true') || (sessionStorage.isDateSet === 'true' && (sessionStorage.isDateInFuture == undefined))) {
       return true;
     } else {
-      showError(date, `Date must be not earlier than tomorrow`);
       return false;
     }
-  }
 }
 
 function validateStreet() {
-  let isLongEnough = checkLength(street, 5);
-  if (isLongEnough) {
-    let hasOnlyLetttersAndNumbers = onlyLettersAndNumbers(street);
-    if (hasOnlyLetttersAndNumbers) {
+  sessionStorage.setItem('isStreetLongEnough', checkLength(street, 5));
+  if (sessionStorage.getItem('isStreetLongEnough') === 'true') {
+    sessionStorage.setItem(
+      'hasStreetGotOnlyLetttersAndNumbers',
+      onlyLettersAndNumbers(street)
+    );
+  }
+}
+
+function isStreetValid() {
+  if ((sessionStorage.isStreetLongEnough === 'true' && sessionStorage.hasStreetGotOnlyLetttersAndNumbers === 'true') || (sessionStorage.isStreetLongEnough === 'true' && (sessionStorage.hasStreetGotOnlyLetttersAndNumbers == undefined))) {
       return true;
     } else {
       return false;
     }
-  } else {
-    return false;
-  }
 }
 
-function validateHouseNumber() {
+function isHouseNumberPositiveInteger(houseNumber) {
   if (
     Number.isInteger(Number(houseNumber.value)) &&
     Number(houseNumber.value) > 0
@@ -162,39 +185,86 @@ function validateHouseNumber() {
   }
 }
 
-function validateFlatNumber() {
+function validateHouseNumber() {
+  sessionStorage.setItem(
+    'isHouseNumberCorrect',
+    isHouseNumberPositiveInteger(houseNumber)
+  );
+}
+
+function isHouseNumberValid() {
+  if (sessionStorage.isHouseNumberCorrect === 'true') {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+function isFlatNumberPositiveInteger(flatNumber) {
   if (
     Number.isInteger(Number(flatNumber.value.replace(/-/g, ''))) &&
     Number(flatNumber.value.replace(/-/g, '')) > 0
   ) {
-    let isDashUsedCorrectly = isDashUsageCorrect(flatNumber);
-    if (isDashUsedCorrectly) {
-      showSucces(flatNumber);
-      return true;
-    } else {
-      showError(flatNumber, 'You can use dash only in the middle');
-      return false;
-    }
+    showSucces(flatNumber);
+    return true;
   } else {
     showError(flatNumber, 'Flat Number must be a positive integer');
     return false;
   }
 }
 
-function validatePaymentType() {
-  let checkedRadios = document.querySelectorAll('.radio:checked');
+function validateFlatNumber() {
+  sessionStorage.setItem(
+    'isFlatNumPosInt',
+    isFlatNumberPositiveInteger(flatNumber)
+  );
+  if (sessionStorage.getItem('isFlatNumPosInt') === 'true') {
+    sessionStorage.setItem('isDashUsedCorrectly', isDashUsageCorrect(flatNumber));
+  }
+}
+
+function isFlatNumberValid() {
+  if ((sessionStorage.isFlatNumPosInt === 'true' && sessionStorage.isDashUsedCorrectly === 'true') || (sessionStorage.isFlatNumPosInt === 'true' && (sessionStorage.isDashUsedCorrectly == undefined))) {
+      return true;
+    } else {
+      return false;
+    }
+}
+
+function isCheckedRadiosMoreThan0(checkedRadios) {
   if (checkedRadios.length == 0) {
+    console.log('length 0', checkedRadios)
     showError(form.querySelector('.radio'), 'Payment Type is required');
     return false;
   } else {
+    console.log('length not 0', checkedRadios)
     showSucces(form.querySelector('.radio'));
     return true;
   }
 }
 
-function validateGiftType() {
-  let checkedCheckboxes = document.querySelectorAll('.checkbox:checked');
-  if (checkedCheckboxes.length > 2) {
+function validatePaymentType() {
+  let checkedRadios = Array.from(document.querySelectorAll('.radio:checked'));
+  sessionStorage.setItem(
+    'isAnyRadioChecked',
+    isCheckedRadiosMoreThan0(checkedRadios)
+  );
+}
+
+function isPaymentTypeValid() {
+  if (sessionStorage.isAnyRadioChecked === 'true') {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+function isCheckedCheckboxesUpTo2(checkedOnes) {
+  if (checkedOnes.length == 0) {
+    showSucces(form.querySelector('.checkbox'));
+    return true;
+  }
+  if (checkedOnes.length > 2) {
     showError(form.querySelector('.checkbox'), 'You can choose up to 2 gifts');
     return false;
   } else {
@@ -203,24 +273,40 @@ function validateGiftType() {
   }
 }
 
+function validateGiftType() {
+  checkedCheckboxes = document.querySelectorAll('.checkbox:checked');
+  sessionStorage.setItem(
+    'isGiftSelectionsValid',
+    isCheckedCheckboxesUpTo2(checkedCheckboxes)
+  );
+}
+
+function isGiftTypesValid() {
+  if (sessionStorage.isGiftSelectionsValid === 'true') {
+    return true;
+  } else {
+    return false;
+  }
+}
+
 function validateEntireForm() {
-  let isNameValid = validateName();
-  let isSurnameValid = validateSurname();
-  let isDateValid = validateDate();
-  let isStreetValid = validateStreet();
-  let isHouseNumberValid = validateHouseNumber();
-  let isFlatNumberValid = validateFlatNumber();
-  let isPaymentTypeValid = validatePaymentType();
-  let isGiftTypesValid = validateGiftType();
+  let isNameValid1 = isNameValid();
+  let isSurnameValid1 = isSurnameValid();
+  let isDateValid1 = isDateValid();
+  let isStreetValid1 = isStreetValid();
+  let isHouseNumberValid1 = isHouseNumberValid();
+  let isFlatNumberValid1 = isFlatNumberValid();
+  let isPaymentTypeValid1 = isPaymentTypeValid();
+  let isGiftTypesValid1 = isGiftTypesValid();
   if (
-    isNameValid &&
-    isSurnameValid &&
-    isDateValid &&
-    isStreetValid &&
-    isHouseNumberValid &&
-    isFlatNumberValid &&
-    isPaymentTypeValid &&
-    isGiftTypesValid
+    isNameValid1 &&
+    isSurnameValid1 &&
+    isDateValid1 &&
+    isStreetValid1 &&
+    isHouseNumberValid1 &&
+    isFlatNumberValid1 &&
+    isPaymentTypeValid1 &&
+    isGiftTypesValid1
   ) {
     submitButton.disabled = false;
     submitButton.addEventListener('click', (ev) => {
@@ -233,8 +319,8 @@ function validateEntireForm() {
 }
 
 function showOrderSummarize() {
-    main.querySelector('.modal-summarize').style.display = 'block'
-    customer.innerHTML = `Customer: <b>${name.value} ${surname.value}</b>`
-    address.innerHTML = `Address: <b>${street.value} Street House ${houseNumber.value} Flat ${flatNumber.value}</b>`
-    summaryDate.innerHTML = `Your order will arrive at: <b>${date.value}</b>`
+  main.querySelector('.modal-summarize').style.display = 'block';
+  customer.innerHTML = `Customer: <b>${name.value} ${surname.value}</b>`;
+  address.innerHTML = `Address: <b>${street.value} Street House ${houseNumber.value} Flat ${flatNumber.value}</b>`;
+  summaryDate.innerHTML = `Your order will arrive at: <b>${date.value}</b>`;
 }

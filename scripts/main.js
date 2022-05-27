@@ -82,25 +82,6 @@ let cards = document.createElement('div');
 cards.classList.add('cards');
 catalog.appendChild(cards);
 
-function allowDrop(ev) {
-  ev.preventDefault();
-}
-
-function drag(ev) {
-  ev.dataTransfer.setData("text/html", ev.target.id);
-  console.log(ev.target.id)
-}
-
-function drop(ev) {
-  ev.preventDefault();
-  var data=ev.dataTransfer.getData("text/html");
-  var nodeCopy = document.getElementById(data).cloneNode(true);
-  console.log(nodeCopy)
-  console.log(ev.target)
-  nodeCopy.id = "newId";
-  ev.target.appendChild(nodeCopy);
-}
-
 fetch('./books.json')
   .then((response) => {
     return response.json();
@@ -110,13 +91,12 @@ fetch('./books.json')
       let card = document.createElement('div');
       card.classList.add('card');
       card.id = `id${index}`;
-      card.draggable = 'true';
-      card.ondragstart = 'drag(event)';
       cards.appendChild(card);
 
       let img = document.createElement('img');
       img.src = el.imageLink;
       img.alt = `${el.title} book cover`;
+      img.id = `imgId${index}`;
       img.classList.add('card-img');
       card.appendChild(img);
 
@@ -184,94 +164,104 @@ fetch('./books.json')
   })
   .then(() => {
     addBtns = Array.from(document.getElementsByClassName('btn-add'));
-    let totalSum = document.createElement('h3');
-    totalSum.classList.add('total-sum');
-    totalSum.innerHTML = `Total sum is $0`;
-    bottomBagContent.appendChild(totalSum);
-
-    let confirm = document.createElement('a');
-    confirm.classList.add('confirm');
-    confirm.innerHTML = 'Confirm Order';
-    confirm.href = './order-form.html';
-    bottomBagContent.appendChild(confirm);
-
-    let cart = document.createElement('div');
-    cart.classList.add('cart');
-    cart.innerHTML = '<i class="fa-solid fa-cart-shopping"></i> ';
-    let initialNum = document.createElement('span');
-    initialNum.textContent = '0';
-    cart.appendChild(initialNum);
-    orderBooks.appendChild(cart);
-
-    function updateTotalSum() {
-      let total = Array.from(
-        cardsInBagBlock.querySelectorAll('.in-bag')
-      ).reduce((acc, num) => {
-        acc += Number(num.children[1].children[2].textContent.replace('$', ''));
-        return acc;
-      }, 0);
-      totalSum.innerHTML = `Total sum is $${total}`;
-    }
-
-    function updateNumberOfBooks() {
-      let num = Array.from(cardsInBagBlock.querySelectorAll('.in-bag')).length;
-      let numSpan = document.createElement('span');
-      numSpan.classList.add('num-span');
-      numSpan.textContent = num;
-      cart.children[1].remove();
-      cart.appendChild(numSpan);
-      console.log(num);
-    }
-
-    let closeBtn = document.createElement('span');
-    closeBtn.classList.add('close-btn');
-    closeBtn.innerHTML = '&times;';
-
-    addBtns.forEach((btn) => {
-      btn.addEventListener('click', () => {
-        if (btn.parentElement.parentElement.classList.contains('in-bag')) {
-          if (
-            cardsInBagBlock.querySelector(
-              `#${btn.parentElement.parentElement.id}`
-            ) == null ||
-            btn.parentElement.parentElement.isEqualNode(
-              cardsInBagBlock
-                .querySelector(`#${btn.parentElement.parentElement.id}`)
-                .classList.remove('has-btn')
-            )
-          ) {
-            cardsInBagBlock.appendChild(
-              btn.parentElement.parentElement.cloneNode({ deep: true })
-            );
-            updateTotalSum();
-            updateNumberOfBooks();
-          }
-        }
-
-        let cards = Array.from(document.getElementsByClassName('card'));
-        cards.forEach((el) => {
-          if (el.classList.contains('in-bag') && cardsInBagBlock.contains(el)) {
-            if (!el.classList.contains('has-btn')) {
-              el.children[1].appendChild(closeBtn.cloneNode({ deep: true }));
-              el.classList.add('has-btn');
-            }
-          }
-        });
-
-        let closeBtns = Array.from(
-          cardsInBagBlock.querySelectorAll('.close-btn')
-        );
-        closeBtns.forEach((btn) => {
-          btn.addEventListener('click', () => {
-            console.log(btn.parentElement.parentElement);
-            btn.parentElement.parentElement.remove();
-            updateTotalSum();
-            updateNumberOfBooks();
-          });
-        });
+    addBtns.forEach((button) => {
+      button.addEventListener('click', () => {
+        addToCartAndUpdate(button);
       });
     });
+
+    let imgs = Array.from(document.querySelectorAll('.card-img'));
+    for (let i = 0; i < imgs.length; i++) {
+      imgs[i].draggable = 'true';
+      imgs[i].ondragstart = 'drag(event)';
+      console.log(imgs[i], i);
+    }
+
+    cart.ondrop = 'drop(event)';
+    console.log(cart)
+    cart.ondragover = 'allowDrop(event)';
   });
+
+function allowDrop(ev) {
+  ev.preventDefault();
+}
+
+function drag(ev) {
+  ev.dataTransfer.setData('text', ev.target.id);
+  console.log('drag', ev, ev.target, ev.target.id);
+}
+
+function drop(ev) {
+  ev.preventDefault();
+  var data = ev.dataTransfer.getData('text');
+  console.log(data, data.id);
+  console.log(document.getElementById(data.id));
+  ev.target.appendChild(data);
+  console.log('drop', data, ev.target, document.getElementById(data));
+}
+
+function updateTotalSum() {
+  let total = Array.from(cardsInBagBlock.querySelectorAll('.in-bag')).reduce(
+    (acc, num) => {
+      acc += Number(num.children[1].children[2].textContent.replace('$', ''));
+      return acc;
+    },
+    0
+  );
+  totalSum.innerHTML = `Total sum is $${total}`;
+}
+
+function updateNumberOfBooks() {
+  let num = Array.from(cardsInBagBlock.querySelectorAll('.in-bag')).length;
+  let numSpan = document.createElement('span');
+  numSpan.classList.add('num-span');
+  numSpan.textContent = num;
+  cart.children[1].remove();
+  cart.appendChild(numSpan);
+}
+
+function addToCartAndUpdate(btn) {
+  if (btn.parentElement.parentElement.classList.contains('in-bag')) {
+    if (
+      cardsInBagBlock.querySelector(`#${btn.parentElement.parentElement.id}`) ==
+        null ||
+      btn.parentElement.parentElement.isEqualNode(
+        cardsInBagBlock
+          .querySelector(`#${btn.parentElement.parentElement.id}`)
+          .classList.remove('has-btn')
+      )
+    ) {
+      cardsInBagBlock.appendChild(
+        btn.parentElement.parentElement.cloneNode({ deep: true })
+      );
+      updateTotalSum();
+      updateNumberOfBooks();
+    }
+  }
+
+  let closeBtn = document.createElement('span');
+  closeBtn.classList.add('close-btn');
+  closeBtn.innerHTML = '&times;';
+
+  let cards = Array.from(document.getElementsByClassName('card'));
+  cards.forEach((el) => {
+    if (el.classList.contains('in-bag') && cardsInBagBlock.contains(el)) {
+      if (!el.classList.contains('has-btn')) {
+        el.children[1].appendChild(closeBtn.cloneNode({ deep: true }));
+        el.classList.add('has-btn');
+      }
+    }
+  });
+
+  let closeBtns = Array.from(cardsInBagBlock.querySelectorAll('.close-btn'));
+  closeBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      btn.parentElement.parentElement.remove();
+      updateTotalSum();
+      updateNumberOfBooks();
+    });
+  });
+}
 
 let bottomBag = document.createElement('div');
 bottomBag.id = 'bottomBag';
@@ -279,6 +269,23 @@ bottomBag.className = 'bottomBag hide';
 
 let bottomBagContent = document.createElement('div');
 bottomBagContent.className = 'bottom-bag-content';
+
+let cardsInBagBlock = document.createElement('div');
+cardsInBagBlock.id = 'cards-in-bag-block';
+cardsInBagBlock.classList.add('cards-in-bag-block');
+bottomBagContent.appendChild(cardsInBagBlock);
+
+let totalSum = document.createElement('h3');
+totalSum.classList.add('total-sum');
+totalSum.innerHTML = `Total sum is $0`;
+bottomBagContent.appendChild(totalSum);
+
+let confirm = document.createElement('a');
+confirm.classList.add('confirm');
+confirm.innerHTML = 'Confirm Order';
+confirm.href = './order-form.html';
+confirm.target = '_blank'
+bottomBagContent.appendChild(confirm);
 
 let chevronUp = document.createElement('div');
 chevronUp.innerHTML =
@@ -304,15 +311,16 @@ const myScrollFunc = function () {
 let orderBooks = document.createElement('h2');
 orderBooks.innerHTML = 'Order Books ';
 
-let cardsInBagBlock = document.createElement('div');
-cardsInBagBlock.id = 'cards-in-bag-block'
-cardsInBagBlock.classList.add('cards-in-bag-block');
-
-bottomBag.ondrop = 'drop(event)';
-bottomBag.ondragover = 'allowDrop(event)';
+let cart = document.createElement('div');
+cart.classList.add('cart');
+cart.id = 'cart';
+cart.innerHTML = '<i class="fa-solid fa-cart-shopping"></i> ';
+let initialNum = document.createElement('span');
+initialNum.textContent = '0';
+cart.appendChild(initialNum);
+orderBooks.appendChild(cart);
 
 bottomBag.appendChild(orderBooks);
-bottomBagContent.appendChild(cardsInBagBlock);
 bottomBag.appendChild(bottomBagContent);
 
 window.addEventListener('scroll', myScrollFunc);
