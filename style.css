@@ -164,10 +164,6 @@ html {
   display: flex;
 }
 
-#catalog .card {
-  cursor: grab;
-}
-
 .card-body {
   width: 200px;
   padding: 10px;
@@ -178,6 +174,10 @@ html {
 .card-img {
   height: 300px;
   width: 200px;
+}
+
+#catalog .card-img {
+  cursor: grab;
 }
 
 .title {
@@ -310,9 +310,11 @@ html {
   height: 85vh;
   border-top: 1px solid #000;
   background: #bbb;
+  outline: 2px solid #bbb;
   z-index: 1;
-  transition: all 0.5s ease;
+  transition: all 0.4s ease;
   overflow-y: initial;
+  border: none;
 }
 
 .bottomBag.full {
@@ -416,6 +418,12 @@ html {
   min-width: 80px;
   min-height: 40px;
   display: inline-block;
+}
+
+.drop-over {
+  outline: 2px solid #0f0;
+  background-color: #999;
+  opacity: 0.95;
 }
 
 @-webkit-keyframes animatetop {
