@@ -90,7 +90,7 @@ fetch('./books.json')
     data.forEach((el, index) => {
       let card = document.createElement('div');
       card.classList.add('card');
-      card.id = `id${index}`;
+      card.id = `cardId${index}`;
       cards.appendChild(card);
 
       let img = document.createElement('img');
@@ -173,32 +173,15 @@ fetch('./books.json')
     let imgs = Array.from(document.querySelectorAll('.card-img'));
     for (let i = 0; i < imgs.length; i++) {
       imgs[i].draggable = 'true';
-      imgs[i].ondragstart = 'drag(event)';
-      console.log(imgs[i], i);
+      imgs[i].addEventListener('dragstart', e => {
+        e.dataTransfer.setData('text/plain', imgs[i].id)
+      })
+
+      imgs[i].addEventListener('dragend', e => {
+        bottomBag.classList.remove('drop-over')
+      })
     }
-
-    cart.ondrop = 'drop(event)';
-    console.log(cart)
-    cart.ondragover = 'allowDrop(event)';
   });
-
-function allowDrop(ev) {
-  ev.preventDefault();
-}
-
-function drag(ev) {
-  ev.dataTransfer.setData('text', ev.target.id);
-  console.log('drag', ev, ev.target, ev.target.id);
-}
-
-function drop(ev) {
-  ev.preventDefault();
-  var data = ev.dataTransfer.getData('text');
-  console.log(data, data.id);
-  console.log(document.getElementById(data.id));
-  ev.target.appendChild(data);
-  console.log('drop', data, ev.target, document.getElementById(data));
-}
 
 function updateTotalSum() {
   let total = Array.from(cardsInBagBlock.querySelectorAll('.in-bag')).reduce(
@@ -266,6 +249,19 @@ function addToCartAndUpdate(btn) {
 let bottomBag = document.createElement('div');
 bottomBag.id = 'bottomBag';
 bottomBag.className = 'bottomBag hide';
+
+bottomBag.addEventListener('dragover', e => {
+  e.preventDefault();
+  bottomBag.classList.add('drop-over')
+})
+
+bottomBag.addEventListener('drop', e => {
+  e.preventDefault()
+  const imageId = e.dataTransfer.getData('text/plain')
+  const card = document.getElementById(imageId).parentElement;
+  card.children[1].children[4].click()
+  bottomBag.classList.remove('drop-over')
+})
 
 let bottomBagContent = document.createElement('div');
 bottomBagContent.className = 'bottom-bag-content';
