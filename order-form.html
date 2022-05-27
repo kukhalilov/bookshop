@@ -15,24 +15,25 @@
             <div class="wrapper">
                 <div class="form-control">
                     <div class="label"><label for="name">Name <span>*</span></label></div>
-                  <input type="text" id="name" placeholder="Enter Name" onkeyup="validateName()" onfocusout="validateName()" onchange="validateName()"/>
+                  <input type="text" id="name" placeholder="Enter Name" onkeyup="validateName();validateEntireForm()" onfocusout="validateName();validateEntireForm()" onchange="validateName();validateEntireForm()
+                  "/>
                   <small>Error Message</small>
                 </div>
                 <div class="form-control">
                     <div class="label"><label for="surname">Surname <span>*</span></label></div>
-                  <input type="text" id="surname" placeholder="Enter Surname" onkeyup="validateSurname()" onfocusout="validateSurname()" onchange="validateSurname()"/>
+                  <input type="text" id="surname" placeholder="Enter Surname" onkeyup="validateSurname();validateEntireForm()" onfocusout="validateSurname();validateEntireForm()" onchange="validateSurname();validateEntireForm()"/>
                   <small>Error Message</small>
                 </div>
                 <div class="form-control">
                     <div class="label">
                       <label for="date">Date <span>*</span></label>
                     </div>
-                  <input type="date" id="date" placeholder="Enter Date" onkeyup="validateDate()" onfocusout="validateDate()" onchange="validateDate()"/>
+                  <input type="date" id="date" placeholder="Enter Date" onkeyup="validateDate();validateEntireForm()" onfocusout="validateDate();validateEntireForm()" onchange="validateDate();validateEntireForm()"/>
                   <small>Error Message</small>
                 </div>
                 <div class="form-control">
                     <div class="label"><label for="street">Street Name <span>*</span></label></div>
-                  <input type="text" id="street" placeholder="Enter Street" onkeyup="validateStreet()" onfocusout="validateStreet()" onchange="validateStreet()"/>
+                  <input type="text" id="street" placeholder="Enter Street" onkeyup="validateStreet();validateEntireForm()" onfocusout="validateStreet();validateEntireForm()" onchange="validateStreet();validateEntireForm()"/>
                   <small>Error Message</small>
                 </div>
                 <div class="form-control">
@@ -40,7 +41,7 @@
                   <input
                     type="number"
                     id="house-number"
-                    placeholder="Enter House Number" onkeyup="validateHouseNumber()" onfocusout="validateHouseNumber()" onchange="validateHouseNumber()"
+                    placeholder="Enter House Number" onkeyup="validateHouseNumber();validateEntireForm()" onfocusout="validateHouseNumber();validateEntireForm()" onchange="validateHouseNumber();validateEntireForm()"
                   />
                   <small>Error Message</small>
                 </div>
@@ -49,34 +50,34 @@
                   <input
                     type="text"
                     id="flat-number"
-                    placeholder="Enter Flat Number" onkeyup="validateFlatNumber()" onfocusout="validateFlatNumber()" onchange="validateFlatNumber()"
+                    placeholder="Enter Flat Number" onkeyup="validateFlatNumber();validateEntireForm()" onfocusout="validateFlatNumber();validateEntireForm()" onchange="validateFlatNumber();validateEntireForm()"
                   />
                   <small>Error Message</small>
                 </div>
             </div>
             <div class="radio-checkbox-wrapper">
-                <div class="form-control" onclick="validatePaymentType()">
+                <div class="form-control" onclick="validatePaymentType();validateEntireForm()">
                     <div class="label">Choose the payment type <span>*</span></div>
-                    <input type="radio" id="cash" class="radio" name="payment-type" value="Cash"
+                    <input type="radio" id="cash" class="radio" name="payment-type" value="Cash" onkeyup="validatePaymentType();validateGiftType();validateEntireForm()" onfocusout="validatePaymentType();validateGiftType();validateEntireForm()" onchange="validatePaymentType();validateGiftType();validateEntireForm()"
                     />
                     <label for="cash">Cash</label>
                     <br>
-                    <input type="radio" id="card" class="radio" name="payment-type" value="Card"/>
+                    <input type="radio" id="card" class="radio" name="payment-type" value="Card" onkeyup="validatePaymentType();validateGiftType();validateEntireForm()" onfocusout="validatePaymentType();validateGiftType();validateEntireForm()" onchange="validatePaymentType();validateGiftType();validateEntireForm()"/>
                     <label for="card">Card</label>
                     <small>Error Message</small>
                   </div>
                   <div class="form-control" onchange="validateGiftType()">
                     <div class="label">Choose 2 gifts (optional)</div>
-                    <input type="checkbox" class="checkbox" id="gift1" name="gift1" value="pack as a gift,"/>
+                    <input type="checkbox" class="checkbox" id="gift1" name="gift1" value="pack as a gift," onkeyup="validateGiftType();validateEntireForm()" onfocusout="validateGiftType();validateEntireForm()" onchange="validateGiftType();validateEntireForm()"/>
                     <label for="gift1">pack as a gift,</label>
                     <br>
-                    <input type="checkbox" class="checkbox" id="gift2" name="gift2" value="add postcard,"/>
+                    <input type="checkbox" class="checkbox" id="gift2" name="gift2" value="add postcard," onkeyup="validateGiftType();validateEntireForm()" onfocusout="validateGiftType();validateEntireForm()" onchange="validateGiftType();validateEntireForm()"/>
                     <label for="gift2">add postcard,</label>
                     <br>
-                    <input type="checkbox" class="checkbox" id="gift3" name="gift3" value="provide 2% discount to the next time,"/>
+                    <input type="checkbox" class="checkbox" id="gift3" name="gift3" value="provide 2% discount to the next time," onkeyup="validateGiftType();validateEntireForm()" onfocusout="validateGiftType();validateEntireForm()" onchange="validateGiftType();validateEntireForm()"/>
                     <label for="gift3">provide 2% discount to the next time,</label>
                     <br>
-                    <input type="checkbox" class="checkbox" id="gift4" name="gift4" value="branded pen or pencil"/>
+                    <input type="checkbox" class="checkbox" id="gift4" name="gift4" value="branded pen or pencil" onkeyup="validateGiftType();validateEntireForm()" onfocusout="validateGiftType();validateEntireForm()" onchange="validateGiftType();validateEntireForm()"/>
                     <label for="gift4">branded pen or pencil</label>
                     <small>Error Message</small>
                   </div>
